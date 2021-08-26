@@ -8,8 +8,8 @@ const jwt = require('jsonwebtoken');
 const { check, validationResult } = require('express-validator');
 
 // @route    GET api/auth
-// #desc     Test route
-// @access   Public
+// #desc     Get user data
+// @access   Private
 
 router.get('/', auth, async (req,res) => {
     try {
@@ -20,6 +20,10 @@ router.get('/', auth, async (req,res) => {
         res.status(500).send('Server Error');
     }
 });
+
+// @route    POST api/auth
+// #desc     Login User
+// @access   Public
 
 router.post('/', [
     check('email', 'Please include a valid email').isEmail(),
