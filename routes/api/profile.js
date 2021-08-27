@@ -199,6 +199,8 @@ router.delete('/experience/:exp_id', auth, async (req,res) => {
     try {
         const profile = await Profile.findOne({ user: req.user.id });
         const removeIndex = profile.experience.map( item => item.id).indexOf(req.params.exp_id);
+        if( removeIndex == -1)
+        return res.json("No such Profile experience");
         profile.experience.splice(removeIndex, 1);
         await profile.save();
         res.json(profile);
@@ -251,6 +253,26 @@ router.put('/education', [ auth, [
         res.json(profile);
     } catch (err) {
         console.error(err.message);
+        res.status(500).send("Server Error");
+    }
+});
+
+// @route    DELETE api/education/:edu_id
+// #desc     Delete a profile education
+// @access   Private
+
+router.delete('/education/:edu_id', auth, async (req,res) => {
+    try {
+        const profile = await Profile.findOne({ user: req.user.id });
+        const removeIndex = profile.education.map( item => item.id).indexOf(req.params.edu_id);
+        if( removeIndex == -1)
+        return res.json("No such Education experience");
+        profile.education.splice(removeIndex, 1);
+        await profile.save();
+        res.json(profile);
+
+    } catch (err) {
+        console.log(err.meaasge);
         res.status(500).send("Server Error");
     }
 });
